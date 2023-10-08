@@ -1,0 +1,143 @@
+
+
+//%main-box as a place holder ==? class never exist but we use it in different places by @extend
+// using if condition to make arrow in each direction
+$direction:"top";
+%main-box{
+    width: 0px;
+    height: 0px;
+    position: relative;
+    margin: 100px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+.arrow{
+    @extend %main-box;
+    &::before{
+        content: '';
+        position: absolute;
+        border: 20px solid transparent;
+        @if $direction=="top"{
+            transform: translateX(-50px);
+            border-bottom-color: red;
+            top: -40px;
+            left: 50%;
+        }
+        @else if $direction=="right"{
+            transform: translateY(-50px);
+            border-left-color: red;
+            right: -40px;
+            top: 50%;
+        }
+        @else if $direction=="bottom"{
+            transform: translateX(50px);
+            border-top-color: red;
+            bottom: -40px;
+            left: 50%;
+        }
+        @else if $direction=="left"{
+            transform: translateY(50px);
+            border-right-color: red;
+            left: -40px;
+            bottom: 50%;
+        }
+        @else {
+            @error'this direction#{$direction} is not valid'
+        }
+    }
+}
+
+
+//  using of mixins an include
+
+@mixin circle($dimintion){
+border-radius: 50%;
+width: $dimintion;
+height: $dimintion;
+}
+@mixin centering{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.circle-100{
+    @include centering();
+    @include circle(100px);
+    background-color: aqua;
+}
+.circle-200{
+    @include circle(200px);
+    background-color: rgb(255, 0, 170);
+}
+
+
+// using for an keyframe to make percent increase from 1 to 100
+@keyframes percentage { 
+  @for $i from 1 through 100 {
+    $percentage: $i + "%";
+    #{$percentage} {
+      content: $percentage;
+    }
+  }
+}
+$loadingTime: 10s;
+$color: rgb(255,0,0);
+
+
+@keyframes loading {
+  0% {
+    width: 0;
+  } 100% {
+    width: 100%;
+  }
+}
+.bg {
+  background-color: $color;
+  animation: loading $loadingTime linear infinite;
+}
+
+.el{
+  color: $color;
+  width: 200px;
+  border: 1px solid $color;
+  
+  &:after {
+    padding-left: 20px;
+    content: "0%";
+    display: block;
+    text-align: center;
+    font-size: 50px;
+    padding: 10px 20px;
+    color: rgb(0,255,255);
+    mix-blend-mode: difference;
+    animation: percentage $loadingTime linear infinite;
+  }
+}
+//  using each in to loop in an object to get variable
+$social:(
+    "facebook":blue,
+    "youtube":red,
+    "github":black
+);
+@each $name,$color in $social{
+    .#{$name}{
+        width: 100px;
+        background-color: $color;
+        color: white;
+        margin-bottom: 10px;
+        text-align: center;
+        padding: 20px;
+        &::after{
+            content: $name;
+        }
+    }
+}
+// Create boostrap grid system
+$grid-cols:12;
+@for $i from 1 through $grid-cols{
+    .col-#{$i}{
+        width: percentage($i/$grid-cols );
+    }
+}
