@@ -351,7 +351,6 @@
 }
 
 .el {
-  color: rgb(255, 0, 0);
   width: 200px;
   border: 1px solid rgb(255, 0, 0);
 }
@@ -362,7 +361,7 @@
   text-align: center;
   font-size: 50px;
   padding: 10px 20px;
-  color: rgb(0, 255, 255);
+  color: rgb(255, 0, 0);
   mix-blend-mode: difference;
   animation: percentage 10s linear infinite;
 }
